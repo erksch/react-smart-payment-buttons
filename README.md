@@ -20,7 +20,7 @@ yarn add react-smart-payment-buttons
 
 ## Usage
 
-This package provides the `<SmartPaymentButtons />` component which renders the buttons with the given configuration. For the buttons to load, you PayPal JavaScript SDK needs to be globally available.
+For the buttons to load, the PayPal JavaScript SDK needs to be globally available.
 
 You can achieve this in two ways:
 
@@ -69,7 +69,7 @@ As you can see, with this option you don't need to the import the script.
 
 This option is faster because defers fetching the paypal script to a later time (when you actually need it).
 
-### Display loading indicator
+### Display a loading indicator
 
 It can take a second to load the script with the `PayPalSDKWrapper`. But you can attach some custom loading that you wan't to display while waiting for the script to load by using the `loading` property of the `PayPalSDKWrapper` component.
 
