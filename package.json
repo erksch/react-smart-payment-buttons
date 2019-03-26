@@ -1,0 +1,9 @@
+{
+  "name": "react-smart-payment-buttons",
+  "version": "0.0.1",
+  "description": "React integration for PayPal's Smart Payment Buttons.",
+  "main": "src/index.js",
+  "repository": "https://github.com/erksch/react-smart-payment-buttons.git",
+  "author": "Erik Ziegler <erikziegler.klm@gmail.com>",
+  "license": "MIT"
+}
