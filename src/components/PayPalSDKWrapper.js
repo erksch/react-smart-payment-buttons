@@ -37,8 +37,8 @@ function PayPalSDKWrapper(wrapperProps: Props) {
     currency, integrationDate, locale, buyerCountry, debug,
 
     clientId: clientId || process.env.REACT_APP_PAYPAL_CLIENT_ID,
-    disableFunding: (disableFunding || []).join(','),
-    disableCard: (disableCard || []).join(','),
+    disableFunding: disableFunding && disableFunding.join(','),
+    disableCard: disableCard && disableCard.join(','),
   }, { separator: '-' }));
 
   const script = `https://www.paypal.com/sdk/js?${params}`;
