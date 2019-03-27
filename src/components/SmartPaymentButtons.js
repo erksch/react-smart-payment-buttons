@@ -1,6 +1,5 @@
 // @flow
 import React, { useEffect } from 'react';
-import queryString from 'query-string';
 
 type Props = {
   // smart payment buttons props
@@ -42,7 +41,6 @@ SmartPaymentButtons.defaultProps = {
   onCancel: () => {},
   onError: () => {},
   style: {},
-  refresh: false,
 };
 
 export default React.memo<Props>(SmartPaymentButtons);

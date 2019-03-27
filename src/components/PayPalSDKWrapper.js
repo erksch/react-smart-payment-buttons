@@ -1,8 +1,8 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+/* eslint-disable react/require-default-props */
+import { Component } from 'react';
 import queryString from 'query-string';
 import humps from 'humps';
-import scriptLoader from 'react-async-script-loader';
 
 // See SDK parameters list:
 // https://developer.paypal.com/docs/checkout/reference/customize-sdk/
@@ -37,6 +37,10 @@ class PayPalSDKWrapper extends Component<Props, State> {
     };
   }
 
+  componentDidMount() {
+    this.loadScript();
+  }
+
   getSDKParams() {
     const {
       clientId, merchantId, intent, commit, vault,
@@ -45,12 +49,19 @@ class PayPalSDKWrapper extends Component<Props, State> {
     } = this.props;
 
     const params = queryString.stringify(humps.decamelizeKeys({
-      merchantId, intent, commit, vault, components,
-      currency, integrationDate, locale, buyerCountry, debug,
-
       clientId: clientId || process.env.REACT_APP_PAYPAL_CLIENT_ID,
       disableFunding: disableFunding && disableFunding.join(','),
       disableCard: disableCard && disableCard.join(','),
+      merchantId,
+      intent,
+      commit,
+      vault,
+      components,
+      currency,
+      integrationDate,
+      locale,
+      buyerCountry,
+      debug,
     }, { separator: '-' }));
 
     return params;
@@ -61,7 +72,7 @@ class PayPalSDKWrapper extends Component<Props, State> {
   };
 
   handleScriptError = () => {
-    console.error('Error loading PayPal SDK script.');
+    // Error loading PayPal SDK script.
   };
 
   loadScript() {
@@ -78,16 +89,15 @@ class PayPalSDKWrapper extends Component<Props, State> {
     return scriptElement;
   }
 
-  componentDidMount () {
-    this.loadScript();
-  }
-
   render() {
-    if (!this.state.isScriptLoaded) {
-      return this.props.loading || null;
+    const { isScriptLoaded } = this.state;
+    const { loading, children } = this.props;
+
+    if (!isScriptLoaded) {
+      return loading || null;
     }
 
-    return this.props.children;
+    return children;
   }
 }
 
