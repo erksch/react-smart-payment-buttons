@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 type Props = {
   containerStyle?: Object,
   containerClassName?: string,
+  refresh?: mixed,
   // smart payment buttons props
   createOrder: (data: any, actions: any) => any,
   onApprove: (data: any, actions: any) => any,
@@ -23,24 +24,22 @@ function SmartPaymentButtons(props: Props) {
   const {
     containerStyle,
     containerClassName,
-    style,
-    createOrder,
-    onApprove,
-    onCancel,
-    onError,
+    refresh,
+    ...buttonsConfig
   } = props;
 
   useEffect(() => {
-    window.paypal.Buttons({
-      style, createOrder, onApprove, onCancel, onError,
-    }).render('#SmartPaymentButtons');
-  }, []);
+    window.paypal
+      .Buttons(buttonsConfig)
+      .render('#SmartPaymentButtons');
+  }, [refresh]);
 
   return (
     <div
       id="SmartPaymentButtons"
-      style={containerStyle}
-      className={containerClassName}
+      key={`SmartPaymentButtons-${JSON.stringify(refresh) || ''}`}
+      style={props.containerStyle}
+      className={props.containerClassName}
     />
   );
 }
@@ -51,6 +50,7 @@ SmartPaymentButtons.defaultProps = {
   style: {},
   containerStyle: {},
   containerClassName: '',
+  refresh: false,
 };
 
 export default React.memo<Props>(SmartPaymentButtons);
