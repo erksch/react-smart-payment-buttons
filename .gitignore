@@ -1,5 +1,6 @@
 /node_modules
 /flow-typed
 /lib
+/coverage
 
 yarn-error.log
