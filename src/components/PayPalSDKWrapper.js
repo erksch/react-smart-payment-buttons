@@ -25,7 +25,7 @@ type Props = {
   children: React$ComponentType<{}>,
 };
 
-function PayPalSDKWrapper(wrapperProps: Props) {
+const PayPalSDKWrapper = React.memo<Props>((wrapperProps: Props) => {
   const {
     clientId, merchantId, intent, commit, vault,
     components, currency, disableFunding, disableCard,
@@ -52,6 +52,6 @@ function PayPalSDKWrapper(wrapperProps: Props) {
   });
 
   return <Component />;
-}
+});
 
 export default PayPalSDKWrapper;
