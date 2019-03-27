@@ -41,14 +41,14 @@ class PayPalSDKWrapper extends Component<Props, State> {
     this.loadScript();
   }
 
-  getSDKParams() {
+  getSDKParams(): Object {
     const {
       clientId, merchantId, intent, commit, vault,
       components, currency, disableFunding, disableCard,
       integrationDate, locale, buyerCountry, debug,
     } = this.props;
 
-    const params = queryString.stringify(humps.decamelizeKeys({
+    const params = {
       clientId: clientId || process.env.REACT_APP_PAYPAL_CLIENT_ID,
       disableFunding: disableFunding && disableFunding.join(','),
       disableCard: disableCard && disableCard.join(','),
@@ -62,9 +62,9 @@ class PayPalSDKWrapper extends Component<Props, State> {
       locale,
       buyerCountry,
       debug,
-    }, { separator: '-' }));
+    };
 
-    return params;
+    return humps.decamelizeKeys(params, { separator: '-' });
   }
 
   handleScriptLoaded = () => {
@@ -77,14 +77,17 @@ class PayPalSDKWrapper extends Component<Props, State> {
 
   loadScript() {
     const params = this.getSDKParams();
-    const src = `https://www.paypal.com/sdk/js?${params}`;
+    const src = `https://www.paypal.com/sdk/js?${queryString.stringify(params)}`;
 
     const scriptElement = document.createElement('script');
     scriptElement.src = src;
 
     scriptElement.addEventListener('load', () => this.handleScriptLoaded());
     scriptElement.addEventListener('error', () => this.handleScriptError());
-    document.body.appendChild(scriptElement);
+
+    if (document.body) {
+      document.body.appendChild(scriptElement);
+    }
 
     return scriptElement;
   }
