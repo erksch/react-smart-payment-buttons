@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import queryString from 'query-string';
 import humps from 'humps';
 import scriptLoader from 'react-async-script-loader';
@@ -43,13 +43,17 @@ function PayPalSDKWrapper(wrapperProps: Props) {
 
   const script = `https://www.paypal.com/sdk/js?${params}`;
 
-  return scriptLoader(script)(function (props) {
-    if (wrapperProps.loading && !props.isScriptLoaded) {
-      return wrapperProps.loading;
-    }
+  return (
+    <Fragment>
+      {scriptLoader(script)(function (props) {
+        if (wrapperProps.loading && !props.isScriptLoaded) {
+          return wrapperProps.loading;
+        }
 
-    return wrapperProps.children;
-  });
+        return wrapperProps.children;
+      })}
+    </Fragment>
+  );
 }
 
 export default PayPalSDKWrapper;
