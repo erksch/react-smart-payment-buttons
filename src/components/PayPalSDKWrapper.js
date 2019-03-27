@@ -43,17 +43,15 @@ function PayPalSDKWrapper(wrapperProps: Props) {
 
   const script = `https://www.paypal.com/sdk/js?${params}`;
 
-  return (
-    <Fragment>
-      {scriptLoader(script)(function (props) {
-        if (wrapperProps.loading && !props.isScriptLoaded) {
-          return wrapperProps.loading;
-        }
+  const Component = scriptLoader(script)(function (props) {
+    if (wrapperProps.loading && !props.isScriptLoaded) {
+      return wrapperProps.loading;
+    }
 
-        return wrapperProps.children;
-      })}
-    </Fragment>
-  );
+    return wrapperProps.children;
+  });
+
+  return <Component />;
 }
 
 export default PayPalSDKWrapper;
