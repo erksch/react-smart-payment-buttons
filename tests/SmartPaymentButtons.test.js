@@ -13,9 +13,10 @@ global.window.paypal = {
 
 describe('<SmartPaymentButtons />', () => {
   let rerender;
+  let container;
 
   beforeEach(() => {
-    ({ rerender } = render((
+    ({ rerender, container } = render((
       <SmartPaymentButtons
         createOrder={() => {}}
         onApprove={() => {}}
@@ -40,6 +41,18 @@ describe('<SmartPaymentButtons />', () => {
 
   it('render the buttons only once', () => {
     expect(buttonsRenderSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('handles undefined refresh values', () => {
+    rerender((
+      <SmartPaymentButtons
+        createOrder={() => {}}
+        onApprove={() => {}}
+        refresh={undefined}
+      />
+    ));
+
+    expect(container).toBeTruthy();
   });
 
   describe('on refresh', () => {

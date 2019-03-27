@@ -1,33 +1,50 @@
 import React from 'react';
-import { render } from 'react-testing-library';
-import { StateMock } from '@react-mock/state';
+import queryString from 'query-string';
+import {
+  render,
+  fireEvent,
+  cleanup,
+} from 'react-testing-library';
 import { PayPalSDKWrapper } from '../src';
 
 const sdkUrl = 'https://www.paypal.com/sdk/js';
 
 describe('<PayPalSDKWrapper />', () => {
-  it('loads the paypal javascript sdk script', () => {
+  let scriptElement;
+
+  afterEach(cleanup);
+
+  beforeEach(() => {
     render((
-      <PayPalSDKWrapper clientId="CLIENT_ID">
-        <span>Some Child</span>
+      <PayPalSDKWrapper
+        clientId="CLIENT_ID"
+        disableFunding={['card', 'sepa']}
+        disableCard={['visa', 'mastercard']}
+        loading="Loading..."
+      >
+        <span data-testid="child">Some Child</span>
       </PayPalSDKWrapper>
     ));
 
-    const tag = document.querySelector(
-      `script[src='${sdkUrl}?client-id=CLIENT_ID']`,
+    scriptElement = document.querySelector(
+      `script[src^='${sdkUrl}']`,
     );
-    expect(tag).toBeTruthy();
+
+    fireEvent.load(scriptElement);
   });
 
-  it('renders children when script load was successful', () => {
-    const { container } = render((
-      <StateMock state={{ isScriptLoaded: true }}>
-        <PayPalSDKWrapper clientId="CLIENT_ID">
-          <span id="child">Some Child</span>
-        </PayPalSDKWrapper>
-      </StateMock>
-    ));
+  it('loads the paypal javascript sdk script', () => {
+    expect(scriptElement).toBeTruthy();
+  });
 
-    expect(container.firstChild.id).toEqual('child');
+  it('loads the paypal javascript sdk script with the correct parameters', () => {
+    const query = scriptElement.src.split('?')[1];
+    const usedParams = queryString.parse(query);
+
+    expect(usedParams).toEqual({
+      'client-id': 'CLIENT_ID',
+      'disable-funding': 'card,sepa',
+      'disable-card': 'visa,mastercard',
+    });
   });
 });

@@ -50,7 +50,7 @@ SmartPaymentButtons.defaultProps = {
   style: {},
   containerStyle: {},
   containerClassName: '',
-  refresh: false,
+  refresh: undefined,
 };
 
 export default React.memo<Props>(SmartPaymentButtons);
