@@ -111,6 +111,6 @@ The component accepts all parameters the SDK accepts. See the [official Customiz
 
 **Attention**
 
-- The `PayPalSDKWrapper` expects the props to be in `camelCase` instead of `kebab-kase` like the SDK parameters.
+- The `PayPalSDKWrapper` expects the props to be in `camelCase` instead of `kebab-case` like the SDK parameters.
 
 - The SDK parameters that take a comma separated list like `disable-funding=card,sepa` have to be assigned with an array in the props like `disableFunding={['card', 'sepa']}`.
