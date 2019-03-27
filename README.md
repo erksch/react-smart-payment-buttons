@@ -96,6 +96,8 @@ It can take a second to load the script with the `PayPalSDKWrapper`. But you can
 |onCancel     | (data) => any           | See [onCancel](https://developer.paypal.com/docs/checkout/integration-features/cancellation-page/) |
 |onError      | (error) => any          | See [onError](https://developer.paypal.com/docs/checkout/integration-features/handle-errors/) |
 |style        | Object                  | See [customization](https://developer.paypal.com/docs/checkout/integration-features/customize-button)  |
+|containerStyle| React StyleSheet Object    | Style applied to the button's container. |
+|containerClassName| string | CSS class applied to the button's container. |
 
 ### PayPalSDKWrapper component
 
