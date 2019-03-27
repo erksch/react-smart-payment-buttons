@@ -12,13 +12,16 @@ global.window.paypal = {
 };
 
 describe('<SmartPaymentButtons />', () => {
+  let rerender;
+
   beforeEach(() => {
-    render((
+    ({ rerender } = render((
       <SmartPaymentButtons
         createOrder={() => {}}
         onApprove={() => {}}
+        refresh={false}
       />
-    ));
+    )));
   });
 
   it('calls the Buttons method with all config parameters and nothing else', () => {
@@ -37,5 +40,21 @@ describe('<SmartPaymentButtons />', () => {
 
   it('render the buttons only once', () => {
     expect(buttonsRenderSpy).toHaveBeenCalledTimes(1);
+  });
+
+  describe('on refresh', () => {
+    beforeEach(() => {
+      rerender((
+        <SmartPaymentButtons
+          createOrder={() => {}}
+          onApprove={() => {}}
+          refresh
+        />
+      ));
+    });
+
+    it('rerenders the button', () => {
+      expect(buttonsRenderSpy).toHaveBeenCalledTimes(2);
+    });
   });
 });
