@@ -13,6 +13,7 @@ jobs:
           paths:
             - ./node_modules
       - run: yarn test --coverage
+      - run: ./node_modules/.bin/coveralls < ./coverage/lcov.info
   flow:
     docker:
       - image: circleci/node:latest
