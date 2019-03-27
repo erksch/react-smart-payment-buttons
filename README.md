@@ -1,4 +1,4 @@
-# react-smart-payment-buttons
+# react-smart-payment-buttons &middot; [![npm version](https://img.shields.io/npm/v/react-smart-payment-buttons.svg?style=flat)](https://www.npmjs.com/package/react-smart-payment-buttons)
 
 A react integration for the PayPal's Smart Payment Buttons.
 
