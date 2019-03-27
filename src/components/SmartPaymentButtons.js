@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import queryString from 'query-string';
 
 type Props = {
-  refresh?: mixed,
   // smart payment buttons props
   createOrder: (data: any, actions: any) => any,
   onApprove: (data: any, actions: any) => any,
@@ -32,13 +31,10 @@ function SmartPaymentButtons(props: Props) {
     window.paypal.Buttons({
       style, createOrder, onApprove, onCancel, onError,
     }).render('#SmartPaymentButtons');
-  }, [props.refresh]);
+  }, []);
 
   return (
-    <div
-      id="SmartPaymentButtons"
-      key={JSON.stringify(props.refresh)}
-    />
+    <div id="SmartPaymentButtons" />
   );
 }
 
