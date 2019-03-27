@@ -1,6 +1,6 @@
 // @flow
 /* eslint-disable react/require-default-props */
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import humps from 'humps';
 
@@ -25,83 +25,66 @@ type Props = {
   children: React$Element<any>,
 };
 
-type State = {
-  isScriptLoaded: boolean,
-};
-class PayPalSDKWrapper extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
+function PayPalSDKWrapper(props: Props) {
+  const {
+    loading,
+    children,
+    ...config
+  } = props;
 
-    this.state = {
-      isScriptLoaded: false,
-    };
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+
+  function handleScriptLoaded() {
+    setIsScriptLoaded(true);
   }
 
-  componentDidMount() {
-    this.loadScript();
+  function handleScriptError() {
+    // Error loading PayPal SDK script.
   }
 
-  getSDKParams(): Object {
+  function getSDKParams(): Object {
     const {
-      clientId, merchantId, intent, commit, vault,
-      components, currency, disableFunding, disableCard,
-      integrationDate, locale, buyerCountry, debug,
-    } = this.props;
+      clientId,
+      disableFunding,
+      disableCard,
+      ...rest
+    } = config;
 
     const params = {
       clientId: clientId || process.env.REACT_APP_PAYPAL_CLIENT_ID,
       disableFunding: disableFunding && disableFunding.join(','),
       disableCard: disableCard && disableCard.join(','),
-      merchantId,
-      intent,
-      commit,
-      vault,
-      components,
-      currency,
-      integrationDate,
-      locale,
-      buyerCountry,
-      debug,
+      ...rest,
     };
 
     return humps.decamelizeKeys(params, { separator: '-' });
   }
 
-  handleScriptLoaded = () => {
-    this.setState({ isScriptLoaded: true });
-  };
-
-  handleScriptError = () => {
-    // Error loading PayPal SDK script.
-  };
-
-  loadScript() {
-    const params = this.getSDKParams();
+  useEffect(() => {
+    const params = getSDKParams();
     const src = `https://www.paypal.com/sdk/js?${queryString.stringify(params)}`;
 
     const scriptElement = document.createElement('script');
     scriptElement.src = src;
 
-    scriptElement.addEventListener('load', () => this.handleScriptLoaded());
-    scriptElement.addEventListener('error', () => this.handleScriptError());
+    scriptElement.addEventListener('load', handleScriptLoaded);
+    scriptElement.addEventListener('error', handleScriptError);
 
     if (document.body) {
       document.body.appendChild(scriptElement);
     }
 
-    return scriptElement;
+    return () => {
+      scriptElement.removeEventListener('load', handleScriptLoaded);
+      scriptElement.removeEventListener('error', handleScriptError);
+    };
+  }, []);
+
+  if (!isScriptLoaded) {
+    return loading || null;
   }
 
-  render() {
-    const { isScriptLoaded } = this.state;
-    const { loading, children } = this.props;
-
-    if (!isScriptLoaded) {
-      return loading || null;
-    }
-
-    return children;
-  }
+  return children;
 }
 
 export default PayPalSDKWrapper;
