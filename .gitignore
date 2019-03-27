@@ -1,4 +1,5 @@
 /node_modules
+/flow-typed
 /lib
 
 yarn-error.log
