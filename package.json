@@ -17,9 +17,7 @@
   "dependencies": {
     "humps": "^2.0.1",
     "query-string": "^6.4.0",
-    "react": "^16.8.5",
-    "react-async-script-loader": "^0.3.0",
-    "react-dom": "^16.8.5"
+    "react-async-script-loader": "^0.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -31,5 +29,9 @@
     "flow-bin": "^0.95.1",
     "jest": "^24.5.0",
     "react-testing-library": "^6.0.3"
+  },
+  "peerDependencies": {
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5"
   }
 }
