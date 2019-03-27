@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import queryString from 'query-string';
 import humps from 'humps';
 import scriptLoader from 'react-async-script-loader';
@@ -29,33 +29,41 @@ type InnerProps = {
   isScriptLoaded: boolean,
 };
 
-const PayPalSDKWrapper = React.memo<WrapperProps>((wrapperProps: WrapperProps) => {
-  const {
-    clientId, merchantId, intent, commit, vault,
-    components, currency, disableFunding, disableCard,
-    integrationDate, locale, buyerCountry, debug,
-  } = wrapperProps;
+class PayPalSDKWrapper extends Component<WrapperProps> {
+  componentShouldUpdate() {
+    return false;
+  }
 
-  const params = queryString.stringify(humps.decamelizeKeys({
-    merchantId, intent, commit, vault, components,
-    currency, integrationDate, locale, buyerCountry, debug,
+  render() {
+    const wrapperProps = this.props;
 
-    clientId: clientId || process.env.REACT_APP_PAYPAL_CLIENT_ID,
-    disableFunding: disableFunding && disableFunding.join(','),
-    disableCard: disableCard && disableCard.join(','),
-  }, { separator: '-' }));
+    const {
+      clientId, merchantId, intent, commit, vault,
+      components, currency, disableFunding, disableCard,
+      integrationDate, locale, buyerCountry, debug,
+    } = wrapperProps;
 
-  const script = `https://www.paypal.com/sdk/js?${params}`;
+    const params = queryString.stringify(humps.decamelizeKeys({
+      merchantId, intent, commit, vault, components,
+      currency, integrationDate, locale, buyerCountry, debug,
 
-  const Component = scriptLoader(script)(React.memo<InnerProps>((props: InnerProps) => {
-    if (wrapperProps.loading && !props.isScriptLoaded) {
-      return wrapperProps.loading;
-    }
+      clientId: clientId || process.env.REACT_APP_PAYPAL_CLIENT_ID,
+      disableFunding: disableFunding && disableFunding.join(','),
+      disableCard: disableCard && disableCard.join(','),
+    }, { separator: '-' }));
 
-    return wrapperProps.children;
-  }));
+    const script = `https://www.paypal.com/sdk/js?${params}`;
 
-  return <Component />;
-});
+    const Component = scriptLoader(script)(React.memo<InnerProps>((props: InnerProps) => {
+      if (wrapperProps.loading && !props.isScriptLoaded) {
+        return wrapperProps.loading;
+      }
+
+      return wrapperProps.children;
+    }));
+
+    return <Component />;
+  }
+}
 
 export default PayPalSDKWrapper;
