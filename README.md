@@ -100,7 +100,7 @@ It can take a second to load the script with the `PayPalSDKWrapper`. But you can
 
 ### PayPalSDKWrapper component
 
-The component accepts all parameters the SDK accepts. See the [official Customize SDK documentation](https://developer.paypal.com/docs/checkout/reference/customize-sdk/)  docs for reference.
+The component accepts all parameters the SDK accepts. See the [official Customize SDK documentation](https://developer.paypal.com/docs/checkout/reference/customize-sdk/)  for reference.
 
 **Attention**
 
