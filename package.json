@@ -17,7 +17,6 @@
   ],
   "scripts": {
     "build": "babel src/ -d lib/",
-    "prepublish": "yarn build",
     "prepare": "yarn build",
     "test": "jest",
     "lint": "eslint src tests"
