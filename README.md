@@ -33,6 +33,8 @@ You can achieve this in two ways:
 Then you are able to use the `SmartPaymentButtons` component where ever you want:
 
 ```javascript
+import SmartPaymentButtons from 'react-smart-payment-buttons';
+
 function MyCheckout() {
   return (
     <div>
@@ -49,6 +51,8 @@ function MyCheckout() {
 ### OR use the built in PayPalSDKWrapper component
 
 ```javascript
+import SmartPaymentButtons, { PayPalSDKWrapper } from 'react-smart-payment-buttons';
+
 function MyCheckout() {
   return (
     <div>
@@ -74,15 +78,17 @@ This option is faster because defers fetching the paypal script to a later time 
 It can take a second to load the script with the `PayPalSDKWrapper`. But you can attach some custom loading that you wan't to display while waiting for the script to load by using the `loading` property of the `PayPalSDKWrapper` component.
 
 ```javascript
-<PayPalSDKWrapper
-  clientId="CLIENT_ID"
-  loading={<Spinner />}
->
-  <SmartPaymentButtons
-    createOrder={...}
-    onApprove={...}
-  />
-</PayPalSDKWrapper>
+return (
+  <PayPalSDKWrapper
+    clientId="CLIENT_ID"
+    loading={<Spinner />}
+  >
+    <SmartPaymentButtons
+      createOrder={...}
+      onApprove={...}
+    />
+  </PayPalSDKWrapper>
+);
 ```
 
 ## Props
