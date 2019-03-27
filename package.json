@@ -6,6 +6,12 @@
   "repository": "https://github.com/erksch/react-smart-payment-buttons.git",
   "author": "Erik Ziegler <erikziegler.klm@gmail.com>",
   "license": "MIT",
+  "keywords": [
+    "react",
+    "paypal",
+    "smart payment buttons",
+    "spb"
+  ],
   "files": [
     "lib"
   ],
