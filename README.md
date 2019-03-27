@@ -5,8 +5,6 @@
 
 A react integration for PayPal's Smart Payment Buttons.
 
-**This package is work in progress.**
-
 ## Installation
 
 Install with npm
