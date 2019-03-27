@@ -1,5 +1,5 @@
 // @flow
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import queryString from 'query-string';
 
 type Props = {

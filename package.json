@@ -6,6 +6,10 @@
   "repository": "https://github.com/erksch/react-smart-payment-buttons.git",
   "author": "Erik Ziegler <erikziegler.klm@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "babel src/ -d lib/",
+    "prepublish": "yarn build"
+  },
   "dependencies": {
     "humps": "^2.0.1",
     "query-string": "^6.4.0",
@@ -13,6 +17,10 @@
     "react-async-script-loader": "^0.3.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.4.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
     "flow-bin": "^0.95.1"
   }
 }
