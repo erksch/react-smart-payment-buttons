@@ -7,7 +7,7 @@ import scriptLoader from 'react-async-script-loader';
 // See SDK parameters list:
 // https://developer.paypal.com/docs/checkout/reference/customize-sdk/
 
-type WrapperProps = {
+type Props = {
   clientId: string,
   merchantId?: string,
   intent?: 'capture' | 'authorize',
@@ -25,23 +25,24 @@ type WrapperProps = {
   children: React$Element<any>,
 };
 
-type InnerProps = {
+type State = {
   isScriptLoaded: boolean,
 };
+class PayPalSDKWrapper extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
 
-class PayPalSDKWrapper extends Component<WrapperProps> {
-  componentShouldUpdate() {
-    return false;
+    this.state = {
+      isScriptLoaded: false,
+    };
   }
 
-  render() {
-    const wrapperProps = this.props;
-
+  getSDKParams() {
     const {
       clientId, merchantId, intent, commit, vault,
       components, currency, disableFunding, disableCard,
       integrationDate, locale, buyerCountry, debug,
-    } = wrapperProps;
+    } = this.props;
 
     const params = queryString.stringify(humps.decamelizeKeys({
       merchantId, intent, commit, vault, components,
@@ -52,17 +53,41 @@ class PayPalSDKWrapper extends Component<WrapperProps> {
       disableCard: disableCard && disableCard.join(','),
     }, { separator: '-' }));
 
-    const script = `https://www.paypal.com/sdk/js?${params}`;
+    return params;
+  }
 
-    const Component = scriptLoader(script)(React.memo<InnerProps>((props: InnerProps) => {
-      if (wrapperProps.loading && !props.isScriptLoaded) {
-        return wrapperProps.loading;
-      }
+  handleScriptLoaded = () => {
+    this.setState({ isScriptLoaded: true });
+  };
 
-      return wrapperProps.children;
-    }));
+  handleScriptError = () => {
+    console.error('Error loading PayPal SDK script.');
+  };
 
-    return <Component />;
+  loadScript() {
+    const params = this.getSDKParams();
+    const src = `https://www.paypal.com/sdk/js?${params}`;
+
+    const scriptElement = document.createElement('script');
+    scriptElement.src = src;
+
+    scriptElement.addEventListener('load', () => this.handleScriptLoaded());
+    scriptElement.addEventListener('error', () => this.handleScriptError());
+    document.body.appendChild(scriptElement);
+
+    return scriptElement;
+  }
+
+  componentDidMount () {
+    this.loadScript();
+  }
+
+  render() {
+    if (!this.state.isScriptLoaded) {
+      return this.props.loading || null;
+    }
+
+    return this.props.children;
   }
 }
 
