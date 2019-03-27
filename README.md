@@ -84,3 +84,26 @@ It can take a second to load the script with the `PayPalSDKWrapper`. But you can
   />
 </PayPalSDKWrapper>
 ```
+
+## Props
+
+### SmartPaymentButtons component
+
+| Name        | Type                    | Description (PayPal Docs Link)   |
+|-------------|-------------------------|----------------------------------|
+|createOrder  | (data, actions) => any  | See [createOrder](https://developer.paypal.com/docs/checkout/integrate/#4-set-up-the-transaction) |
+|onApprove    | (data, actions) => any  | See [onApprove](https://developer.paypal.com/docs/checkout/integrate/#5-capture-the-transaction) |
+|onCancel     | (data) => any           | See [onCancel](https://developer.paypal.com/docs/checkout/integration-features/cancellation-page/) |
+|onError      | (error) => any          | See [onError](https://developer.paypal.com/docs/checkout/integration-features/handle-errors/) |
+|style        | Object                  | See [customization](https://developer.paypal.com/docs/checkout/integration-features/customize-button)  |
+|refresh      | mixed                   | (Beta) If this value changes the buttons are rerendered |
+
+### PayPalSDKWrapper component
+
+The component accepts all parameters the SDK accepts. See the [official Customize SDK documentation](https://developer.paypal.com/docs/checkout/reference/customize-sdk/)  docs for reference.
+
+**Attention**
+
+- The `PayPalSDKWrapper` expects the props to be in `camelCase` instead of `kebab-kase` like the SDK parameters.
+
+- The SDK parameters that take a comma separated list like `disable-funding=card,sepa` have to be assigned with an array in the props like `disableFunding={['card', 'sepa']}`.
