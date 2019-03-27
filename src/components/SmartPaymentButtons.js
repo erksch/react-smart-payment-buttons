@@ -3,13 +3,13 @@ import React, { useEffect } from 'react';
 import queryString from 'query-string';
 
 type Props = {
-  refresh: mixed,
+  refresh?: mixed,
   // smart payment buttons props
   createOrder: (data: any, actions: any) => any,
   onApprove: (data: any, actions: any) => any,
-  onCancel: (data: any) => void,
-  onError: (error: any) => void,
-  style: {
+  onCancel?: (data: any) => void,
+  onError?: (error: any) => void,
+  style?: {
     layout: 'vertical' | 'horizontal',
     color: 'gold' | 'blue' | 'silver',
     shape: 'rect' | 'pill',
@@ -42,5 +42,11 @@ function SmartPaymentButtons(props: Props) {
   );
 }
 
+SmartPaymentButtons.defaultProps = {
+  onCancel: () => {},
+  onError: () => {},
+  style: {},
+  refresh: false,
+};
 
 export default SmartPaymentButtons;
