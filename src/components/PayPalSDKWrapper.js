@@ -22,14 +22,14 @@ type WrapperProps = {
   buyerCountry?: string,
   debug: boolean,
   loading?: React$Node,
-  children: React$ComponentType<{}>,
+  children: React$Element<any>,
 };
 
 type InnerProps = {
   isScriptLoaded: boolean,
 };
 
-const PayPalSDKWrapper = React.memo<Props>((wrapperProps: Props) => {
+const PayPalSDKWrapper = React.memo<WrapperProps>((wrapperProps: WrapperProps) => {
   const {
     clientId, merchantId, intent, commit, vault,
     components, currency, disableFunding, disableCard,
