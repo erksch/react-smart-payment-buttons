@@ -49,4 +49,4 @@ SmartPaymentButtons.defaultProps = {
   refresh: false,
 };
 
-export default SmartPaymentButtons;
+export default React.memo<Props>(SmartPaymentButtons);
