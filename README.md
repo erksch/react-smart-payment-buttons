@@ -3,6 +3,7 @@
 [![CircleCI](https://circleci.com/gh/erksch/react-smart-payment-buttons.svg?style=svg)](https://circleci.com/gh/erksch/react-smart-payment-buttons)
 [![Coverage Status](https://coveralls.io/repos/github/erksch/react-smart-payment-buttons/badge.svg)](https://coveralls.io/github/erksch/react-smart-payment-buttons)
 [![npm package](https://badge.fury.io/js/react-smart-payment-buttons.svg)](https://www.npmjs.com/package/react-smart-payment-buttons)
+[![npm downloads](https://img.shields.io/npm/dm/react-smart-payment-buttons.svg)](https://www.npmjs.com/package/react-smart-payment-buttons)
 
 A react integration for PayPal's Smart Payment Buttons.
 
