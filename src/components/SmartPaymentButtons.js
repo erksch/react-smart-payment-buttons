@@ -1,10 +1,13 @@
 // @flow
-import React, { useEffect } from 'react';
+/* eslint-disable react/require-default-props */
+import React, { useState, useEffect } from 'react';
 
 type Props = {
   containerStyle?: Object,
   containerClassName?: string,
   refresh?: mixed,
+  sdkScriptId?: string,
+  loading?: React$Node,
   // smart payment buttons props
   createOrder: (data: any, actions: any) => any,
   onApprove: (data: any, actions: any) => any,
@@ -25,14 +28,50 @@ function SmartPaymentButtons(props: Props) {
     containerStyle,
     containerClassName,
     refresh,
+    sdkScriptId,
+    loading,
     ...buttonsConfig
   } = props;
 
-  useEffect(() => {
+  const [isLoadingScript, setIsLoadingScript] = useState(!!sdkScriptId);
+
+  function renderButtons() {
     window.paypal
       .Buttons(buttonsConfig)
       .render('#SmartPaymentButtons');
+  }
+
+  function handleSDKLoad() {
+    setIsLoadingScript(false);
+    renderButtons();
+  }
+
+  useEffect(() => {
+    if (!window.paypal && sdkScriptId) {
+      const script = document.getElementById(sdkScriptId);
+
+      if (script) {
+        setIsLoadingScript(true);
+        script.addEventListener('load', handleSDKLoad, false);
+      }
+    } else {
+      renderButtons();
+    }
+
+    return () => {
+      if (sdkScriptId) {
+        const script = document.getElementById(sdkScriptId);
+
+        if (script) {
+          script.removeEventListener('load', handleSDKLoad, false);
+        }
+      }
+    };
   }, [refresh]);
+
+  if (isLoadingScript) {
+    return loading || null;
+  }
 
   return (
     <div
@@ -50,7 +89,6 @@ SmartPaymentButtons.defaultProps = {
   style: {},
   containerStyle: {},
   containerClassName: '',
-  refresh: undefined,
 };
 
 export default React.memo<Props>(SmartPaymentButtons);
