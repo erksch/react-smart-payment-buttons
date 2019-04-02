@@ -1,6 +1,7 @@
 // @flow
 /* eslint-disable react/require-default-props */
 import React, { useState, useEffect } from 'react';
+import useSDKScript from '../hooks/useSDKScript';
 
 type Props = {
   containerStyle?: Object,
@@ -33,43 +34,17 @@ function SmartPaymentButtons(props: Props) {
     ...buttonsConfig
   } = props;
 
-  const [isLoadingScript, setIsLoadingScript] = useState(!!sdkScriptId);
-
-  function renderButtons() {
-    window.paypal
-      .Buttons(buttonsConfig)
-      .render('#SmartPaymentButtons');
-  }
-
-  function handleSDKLoad() {
-    setIsLoadingScript(false);
-    renderButtons();
-  }
+  const { isSDKLoaded } = useSDKScript(sdkScriptId);
 
   useEffect(() => {
-    if (!window.paypal && sdkScriptId) {
-      const script = document.getElementById(sdkScriptId);
-
-      if (script) {
-        setIsLoadingScript(true);
-        script.addEventListener('load', handleSDKLoad, false);
-      }
-    } else {
-      renderButtons();
+    if (isSDKLoaded) {
+      window.paypal
+        .Buttons(buttonsConfig)
+        .render('#SmartPaymentButtons');
     }
+  }, [refresh, isSDKLoaded]);
 
-    return () => {
-      if (sdkScriptId) {
-        const script = document.getElementById(sdkScriptId);
-
-        if (script) {
-          script.removeEventListener('load', handleSDKLoad, false);
-        }
-      }
-    };
-  }, [refresh]);
-
-  if (isLoadingScript) {
+  if (sdkScriptId && !isSDKLoaded) {
     return loading || null;
   }
 
