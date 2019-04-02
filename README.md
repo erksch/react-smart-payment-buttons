@@ -51,7 +51,28 @@ function MyCheckout() {
 }
 ```
 
-### OR use the built in PayPalSDKWrapper component
+Alternatively, you can also load the script **asynchronously**:
+
+```html
+<script id="paypal-sdk" src="https://www.paypal.com/sdk/js?client-id=CLIENT_ID" async></script>
+```
+
+Now you can tell `SmartPaymentButtons` to wait until the SDK is loaded by providing the `sdkScriptId` you chose earlier:
+
+```javascript
+<SmartPaymentButtons
+  sdkScriptId="paypal-sdk"
+  loading={<Spinner />} // optional
+  createOrder={...}
+  onApprove={...}
+/>
+```
+
+You can add an optional `loading` prop to display something until the buttons are displayed.
+
+Making the `<script>` asynchronous is a highly recommend because it reduces the load time of your application.
+
+### Alternative: Use the built in PayPalSDKWrapper component
 
 ```javascript
 import SmartPaymentButtons, { PayPalSDKWrapper } from 'react-smart-payment-buttons';
@@ -74,7 +95,7 @@ function MyCheckout() {
 As you can see, with this option you don't need to the import the script.
 
 
-This option is faster because defers fetching the paypal script to a later time (when you actually need it).
+This option also reduces the load time of your application like the async script. A second benefit is that the PayPal SDK is only loaded when it's needed: Users who are entering your website may not want to immediatly download a PayPal SDK. By using the wrapper you are able to defer loading the SDK for example to when the users enters the checkout page.
 
 Instead of using the `clientId` prop you can also create an environment variable `REACT_APP_PAYPAL_CLIENT_ID` (for create-react-app usage) that contains the id. The `PayPalSDKWrapper` will pick it up automatically.
 
@@ -110,6 +131,8 @@ return (
 |containerStyle| React StyleSheet Object    | Style applied to the button's container |
 |containerClassName| string | CSS class applied to the button's container |
 |refresh      | mixed                   | If this value changes the buttons are rerendered |
+|sdkScriptId  | string                   | ID of the script tag loading the PayPal SDK asynchronously |
+|loading | React Node | Only works with sdkScriptId. Is displayed until the SDK is loaded. |
 
 ### PayPalSDKWrapper component
 
