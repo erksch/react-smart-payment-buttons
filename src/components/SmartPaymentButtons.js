@@ -1,6 +1,6 @@
 // @flow
 /* eslint-disable react/require-default-props */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import useSDKScript from '../hooks/useSDKScript';
 
 type Props = {
@@ -44,8 +44,8 @@ function SmartPaymentButtons(props: Props) {
     }
   }, [refresh, isSDKLoaded]);
 
-  if (sdkScriptId && !isSDKLoaded) {
-    return loading || null;
+  if (sdkScriptId && !isSDKLoaded && loading) {
+    return loading;
   }
 
   return (
