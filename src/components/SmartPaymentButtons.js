@@ -1,10 +1,14 @@
 // @flow
+/* eslint-disable react/require-default-props */
 import React, { useEffect } from 'react';
+import useSDKScript from '../hooks/useSDKScript';
 
 type Props = {
   containerStyle?: Object,
   containerClassName?: string,
   refresh?: mixed,
+  sdkScriptId?: string,
+  loading?: React$Node,
   // smart payment buttons props
   createOrder: (data: any, actions: any) => any,
   onApprove: (data: any, actions: any) => any,
@@ -25,14 +29,24 @@ function SmartPaymentButtons(props: Props) {
     containerStyle,
     containerClassName,
     refresh,
+    sdkScriptId,
+    loading,
     ...buttonsConfig
   } = props;
 
+  const { isSDKLoaded } = useSDKScript(sdkScriptId);
+
   useEffect(() => {
-    window.paypal
-      .Buttons(buttonsConfig)
-      .render('#SmartPaymentButtons');
-  }, [refresh]);
+    if (isSDKLoaded) {
+      window.paypal
+        .Buttons(buttonsConfig)
+        .render('#SmartPaymentButtons');
+    }
+  }, [refresh, isSDKLoaded]);
+
+  if (!isSDKLoaded && loading) {
+    return loading;
+  }
 
   return (
     <div
@@ -50,7 +64,6 @@ SmartPaymentButtons.defaultProps = {
   style: {},
   containerStyle: {},
   containerClassName: '',
-  refresh: undefined,
 };
 
 export default React.memo<Props>(SmartPaymentButtons);
