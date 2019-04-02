@@ -44,7 +44,7 @@ function SmartPaymentButtons(props: Props) {
     }
   }, [refresh, isSDKLoaded]);
 
-  if (sdkScriptId && !isSDKLoaded && loading) {
+  if (!isSDKLoaded && loading) {
     return loading;
   }
 

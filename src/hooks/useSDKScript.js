@@ -2,33 +2,41 @@
 import { useState, useEffect } from 'react';
 
 function useSDKScript(sdkScriptId: ?string) {
-  const [isSDKLoaded, setIsSDKLoaded] = useState(!sdkScriptId);
+  const shouldLoadSDK = !window.paypal && !!sdkScriptId;
+  const [isSDKLoaded, setIsSDKLoaded] = useState(!shouldLoadSDK);
 
   function handleSDKLoad() {
     setIsSDKLoaded(true);
   }
 
-  useEffect(() => {
-    if (!window.paypal && sdkScriptId && !isSDKLoaded) {
+  function mount() {
+    if (!shouldLoadSDK || !sdkScriptId || isSDKLoaded) return;
+
+    const script = document.getElementById(sdkScriptId);
+
+    if (script) {
+      script.addEventListener('load', handleSDKLoad, false);
+    }
+  }
+
+  function unmount() {
+    if (sdkScriptId) {
       const script = document.getElementById(sdkScriptId);
 
       if (script) {
-        script.addEventListener('load', handleSDKLoad, false);
+        script.removeEventListener('load', handleSDKLoad, false);
       }
     }
+  }
 
-    return () => {
-      if (sdkScriptId) {
-        const script = document.getElementById(sdkScriptId);
+  useEffect(() => {
+    mount();
+    return unmount;
+  });
 
-        if (script) {
-          script.removeEventListener('load', handleSDKLoad, false);
-        }
-      }
-    };
-  }, [isSDKLoaded]);
-
-  return { isSDKLoaded };
+  return {
+    isSDKLoaded: shouldLoadSDK ? isSDKLoaded : true,
+  };
 }
 
 export default useSDKScript;
