@@ -51,6 +51,7 @@ function PayPalSDKWrapper(props: Props) {
     } = config;
 
     const params = {
+      vault: true,
       clientId: clientId || process.env.REACT_APP_PAYPAL_CLIENT_ID,
       disableFunding: disableFunding && disableFunding.join(','),
       disableCard: disableCard && disableCard.join(','),
