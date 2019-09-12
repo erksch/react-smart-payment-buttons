@@ -1,6 +1,7 @@
 import SmartPaymentButtons from './components/SmartPaymentButtons';
+import SmartSubscriptionButtons from './components/SmartSubscriptionButtons';
 import PayPalSDKWrapper from './components/PayPalSDKWrapper';
 
-export { PayPalSDKWrapper };
+export { SmartPaymentButtons, SmartSubscriptionButtons };
 
-export default SmartPaymentButtons;
+export default PayPalSDKWrapper;
