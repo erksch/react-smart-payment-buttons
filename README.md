@@ -36,7 +36,7 @@ You can achieve this in two ways:
 Then you are able to use the `SmartPaymentButtons` component where ever you want:
 
 ```javascript
-import SmartPaymentButtons from 'react-smart-payment-buttons';
+import { SmartPaymentButtons, SmartSubscriptionButtons } from 'react-smart-payment-buttons';
 
 function MyCheckout() {
   return (
@@ -49,6 +49,18 @@ function MyCheckout() {
     </div>
   );
 }
+
+function MySubscription() {
+      return (
+        <div>
+          <h1>Checkout</h1>
+          <SmartSubscriptionButtons
+            createSubscription={...}
+            onApprove={...}
+          />
+        </div>
+      );
+}
 ```
 
 Alternatively, you can also load the script **asynchronously**:
@@ -57,13 +69,20 @@ Alternatively, you can also load the script **asynchronously**:
 <script id="paypal-sdk" src="https://www.paypal.com/sdk/js?client-id=CLIENT_ID" async></script>
 ```
 
-Now you can tell `SmartPaymentButtons` to wait until the SDK is loaded by providing the `sdkScriptId` you chose earlier:
+Now you can tell `SmartPaymentButtons` and `SmartSubscriptionButtons` to wait until the SDK is loaded by providing the `sdkScriptId` you chose earlier:
 
 ```javascript
 <SmartPaymentButtons
   sdkScriptId="paypal-sdk"
   loading={<Spinner />} // optional
   createOrder={...}
+  onApprove={...}
+/>
+
+<SmartSubscriptionButtons
+  sdkScriptId="paypal-sdk"
+  loading={<Spinner />} // optional
+  createSubscription={...}
   onApprove={...}
 />
 ```
@@ -75,7 +94,7 @@ Making the `<script>` asynchronous is a highly recommend because it reduces the 
 ### Alternative: Use the built in PayPalSDKWrapper component
 
 ```javascript
-import SmartPaymentButtons, { PayPalSDKWrapper } from 'react-smart-payment-buttons';
+import PayPalSDKWrapper, { SmartPaymentButtons, SmartSubscriptionButtons } from 'react-smart-payment-buttons';
 
 function MyCheckout() {
   return (
@@ -84,6 +103,20 @@ function MyCheckout() {
       <PayPalSDKWrapper clientId="CLIENT_ID">
         <SmartPaymentButtons
           createOrder={...}
+          onApprove={...}
+        />
+      </PayPalSDKWrapper>
+    </div>
+  );
+}
+
+function MySubscription() {
+  return (
+    <div>
+      <h1>Checkout</h1>
+      <PayPalSDKWrapper clientId="CLIENT_ID">
+        <SmartSubscriptionButtons
+          createSubscription={...}
           onApprove={...}
         />
       </PayPalSDKWrapper>
@@ -125,6 +158,21 @@ return (
 |-------------|-------------------------|----------------------------------|
 |createOrder  | (data, actions) => any  | See [createOrder](https://developer.paypal.com/docs/checkout/integrate/#4-set-up-the-transaction) |
 |onApprove    | (data, actions) => any  | See [onApprove](https://developer.paypal.com/docs/checkout/integrate/#5-capture-the-transaction) |
+|onCancel     | (data) => any           | See [onCancel](https://developer.paypal.com/docs/checkout/integration-features/cancellation-page/) |
+|onError      | (error) => any          | See [onError](https://developer.paypal.com/docs/checkout/integration-features/handle-errors/) |
+|style        | Object                  | See [customization](https://developer.paypal.com/docs/checkout/integration-features/customize-button)  |
+|containerStyle| React StyleSheet Object    | Style applied to the button's container |
+|containerClassName| string | CSS class applied to the button's container |
+|refresh      | mixed                   | If this value changes the buttons are rerendered |
+|sdkScriptId  | string                   | ID of the script tag loading the PayPal SDK asynchronously |
+|loading | React Node | Only works with sdkScriptId. Is displayed until the SDK is loaded. |
+
+### SmartSubscriptionButtons component
+
+| Name        | Type                    | Description (PayPal Docs Link)   |
+|-------------|-------------------------|----------------------------------|
+| createSubscription | (data, actions) => any  | See [createSubscription](https://developer.paypal.com/docs/subscriptions/integrate/#4-create-a-subscription) |
+|onApprove    | (data, actions) => any  | See [onApprove](https://developer.paypal.com/docs/subscriptions/integrate/#4-create-a-subscription) |
 |onCancel     | (data) => any           | See [onCancel](https://developer.paypal.com/docs/checkout/integration-features/cancellation-page/) |
 |onError      | (error) => any          | See [onError](https://developer.paypal.com/docs/checkout/integration-features/handle-errors/) |
 |style        | Object                  | See [customization](https://developer.paypal.com/docs/checkout/integration-features/customize-button)  |

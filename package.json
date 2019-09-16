@@ -1,6 +1,6 @@
 {
   "name": "react-smart-payment-buttons",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "React integration for PayPal's Smart Payment Buttons.",
   "main": "lib/index.js",
   "repository": "https://github.com/erksch/react-smart-payment-buttons.git",
