@@ -5,7 +5,7 @@ import {
   fireEvent,
   cleanup,
 } from 'react-testing-library';
-import { PayPalSDKWrapper } from '../src';
+import PayPalSDKWrapper from '../src';
 
 const sdkUrl = 'https://www.paypal.com/sdk/js';
 
@@ -45,6 +45,7 @@ describe('<PayPalSDKWrapper />', () => {
       'client-id': 'CLIENT_ID',
       'disable-funding': 'card,sepa',
       'disable-card': 'visa,mastercard',
+      vault: 'true',
     });
   });
 });

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { render } from 'react-testing-library';
-import SmartPaymentButtons from '../src';
+import { SmartPaymentButtons } from '../src';
 
 const buttonsRenderSpy = jest.fn();
 
